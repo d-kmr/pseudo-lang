@@ -15,6 +15,7 @@ e ::=
 	| e.field // member access
 	| e[e]  // array access
 	| i(e,..,e) // function call
+    | { fld=e,.., fld=e } // struct
 c ::= 
     | e=e | e!=e | e<e | e>e | e<=e | e>=e 
     | c and c | c or c | not c
@@ -45,6 +46,7 @@ module Exp = struct
     | Idx of t * t (* e[e] *)
     | Lst of t list (* [e1,e2,e3] *)
     | Fun of string * t list (* f(e1,e2) *)
+    | Str of (string * t) list
 
   let rec pp fmt e =  (* pretty printer *)
     match e with
@@ -61,6 +63,8 @@ module Exp = struct
     | Idx(e1,e2) -> Fmt.fprintf fmt "%a[%a]" ppi e1 pp e2
     | Lst ee -> Fmt.fprintf fmt "[%a]" (pp_list_comma pp) ee
     | Fun(fname,ee) -> Fmt.fprintf fmt "%s(%a)" fname (pp_list_comma pp) ee
+    | Str ff -> Fmt.fprintf fmt "{%a}" (pp_list_comma pp_struct_content) ff
+  and pp_struct_content fmt (fld,e) = Fmt.fprintf fmt "%s = %a" fld pp e
   and ppi fmt e = (* pretty printer for innier expression *)
     match e with
     | Add(e1,e2) -> Fmt.fprintf fmt "(%a + %a)" ppi e1 ppi e2
@@ -179,9 +183,9 @@ end
 
 module FunDef = struct
 
-  type t = FunDef of string * string list * Stmt.t list
+  type t = FD of string * string list * Stmt.t list
 
-  let pp fmt (FunDef(fname,prmL,ssBody)) =
+  let pp fmt (FD(fname,prmL,ssBody)) = 
     Fmt.fprintf fmt "@[def %s(%a):\n" fname (pp_list_comma pp_string) prmL;
     Fmt.fprintf fmt "%a@." (Stmt.pp_suite 1) ssBody
 
@@ -194,15 +198,12 @@ module Program = struct
 
   type t = FunDef.t list
 
-  let pp fmt (prog:t) =
-    Fmt.fprintf fmt "@[%a" (pp_list_newline FunDef.pp) prog
-
+  let pp fmt prog = Fmt.fprintf fmt "@[%a@." (pp_list_newline FunDef.pp) prog
+                  
   let to_python prog = Fmt.asprintf "@[%a@]" pp prog
 
 end
 ;;
-
-
 
 module ShortCut = struct 
   let _IF(c,ssThen,uuElseIf,ssElse) = Stmt.If(c,ssThen,uuElseIf,ssElse)
@@ -226,9 +227,3 @@ module ShortCut = struct
           
 end
 ;;
-
-open ShortCut
-       
-let s1 = _IF(_True,["x" <.- n1; "y" <.- n2;_FCALL("f",[n4])],[(xx =.= yy,["x" <.- n5]);(xx =.= yy,["x" <.- n5])],None);;
-let s2 = _FOREACH("z",_LST[n0;n1;n2],[s1;_RETURN0]);;
-Fmt.printf "%a" (Stmt.pp 0) s2;;
