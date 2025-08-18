@@ -138,7 +138,7 @@ stmt:
   | IF; e=exp; THEN; NEWLINE; ss=suite; NEWLINE; uuElseIf=list(ELSEIF; e=exp; THEN; NEWLINE; ss=suite; NEWLINE {(e,ss)}); oElse=option(ELSE; NEWLINE; ss=suite; NEWLINE {ss}); END; IF { Stmt.If(e,ss,uuElseIf,oElse) }
 ;
 suite:
-  | INDENT; ss=list(s=stmt; nonempty_list(NEWLINE) {s}); DEDENT { ss }
+  | INDENT; list(NEWLINE); ss=list(s=stmt; nonempty_list(NEWLINE) {s}); DEDENT { ss }
 ;
 
 

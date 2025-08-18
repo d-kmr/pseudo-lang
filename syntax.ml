@@ -59,19 +59,19 @@ module Exp = struct
     match e with
     | Num n -> Fmt.fprintf fmt "%d" n
     | Var v -> Fmt.fprintf fmt "%s" v
-    | Null -> Fmt.fprintf fmt "null"
+    | Null -> Fmt.fprintf fmt "None"
     | Add(e1,e2) -> Fmt.fprintf fmt "%a + %a" ppi e1 ppi e2
     | Sub(e1,e2) -> Fmt.fprintf fmt "%a - %a" ppi e1 ppi e2
     | Minus e -> Fmt.fprintf fmt "-%a" ppi e
     | Mul(e1,e2) -> Fmt.fprintf fmt "%a * %a" ppi e1 ppi e2
     | Div(e1,e2) -> Fmt.fprintf fmt "%a / %a" ppi e1 ppi e2
     | Mod(e1,e2) -> Fmt.fprintf fmt "%a mod %a" ppi e1 ppi e2
-    | Mem(e,field) -> Fmt.fprintf fmt "%a.%s" ppi e field
+    | Mem(e,field) -> Fmt.fprintf fmt "%a[\'%s\']" ppi e field
     | Idx(e1,e2) -> Fmt.fprintf fmt "%a[%a]" ppi e1 pp e2
     | Lst ee -> Fmt.fprintf fmt "[%a]" (pp_list_comma pp) ee
     | Fun(fname,ee) -> Fmt.fprintf fmt "%s(%a)" fname (pp_list_comma pp) ee
     | Str ff -> Fmt.fprintf fmt "{%a}" (pp_list_comma pp_struct_content) ff
-    | Eq(e1,e2) -> Fmt.fprintf fmt "%a = %a" ppi e1 ppi e2
+    | Eq(e1,e2) -> Fmt.fprintf fmt "%a == %a" ppi e1 ppi e2
     | Neq(e1,e2) -> Fmt.fprintf fmt "%a != %a" ppi e1 ppi e2
     | Lt(e1,e2) -> Fmt.fprintf fmt "%a < %a" ppi e1 ppi e2
     | Gt(e1,e2) -> Fmt.fprintf fmt "%a > %a" ppi e1 ppi e2
@@ -80,8 +80,8 @@ module Exp = struct
     | And(e1,e2) -> Fmt.fprintf fmt "%a and %a" ppi e1 ppi e2
     | Or(e1,e2) -> Fmt.fprintf fmt "%a or %a" ppi e1 ppi e2
     | Not e -> Fmt.fprintf fmt "not %a" ppi e
-    | True -> Fmt.fprintf fmt "true"
-    | False -> Fmt.fprintf fmt "false"
+    | True -> Fmt.fprintf fmt "True"
+    | False -> Fmt.fprintf fmt "False"
   and ppi fmt e = (* pretty printer for innier expression *)
     match e with
     | Add(e1,e2) -> Fmt.fprintf fmt "(%a + %a)" ppi e1 ppi e2
@@ -100,7 +100,7 @@ module Exp = struct
     | Or(e1,e2) -> Fmt.fprintf fmt "(%a or %a)" ppi e1 ppi e2
     | Not e -> Fmt.fprintf fmt "(not %a)" ppi e
     | _ -> pp fmt e
-  and pp_struct_content fmt (fld,e) = Fmt.fprintf fmt "%s = %a" fld pp e
+  and pp_struct_content fmt (fld,e) = Fmt.fprintf fmt "\'%s\':%a" fld pp e
       
   let to_python e = Fmt.asprintf "@[%a@]" pp e
                   
@@ -185,7 +185,7 @@ module Program = struct
 
   let pp fmt prog = Fmt.fprintf fmt "@[%a@]" (pp_list_newline FunDef.pp) prog
                   
-  let to_python prog = Fmt.asprintf "@[%a@]" pp prog
+  let to_python prog = Fmt.asprintf "@[%a\n\n%s@." pp prog "main()"
 
 end
 ;;

@@ -11,12 +11,24 @@ function findNode(node, value)
 	return false
 end function
 
-function main(x,y,z)
+function main()
+  x <- 2
+  z <- 5
   x <- 10+x*z
   y <- 20
-  node <- { value=3, left=null , right=null }
-  z <- node.value
-  findNode(node,20)
-  return(x)
-  print(x)
+  node00 <- { value=3, left=null , right=null }
+  node01 <- { value=4, left=null , right=null }
+  node10 <- { value=22, left=null , right=null }
+  node11 <- { value=11, left=null , right=null }
+  node0 <- { value=31, left=node00 , right=node01 }
+  node1 <- { value=51, left=node10 , right=node11 }
+  node <- { value=99, left=node0 , right=node1 }
+  
+  if findNode(node,20) then
+	print(true)
+  else
+    print(false)
+  end if
+  
+  return
 end function
