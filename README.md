@@ -30,4 +30,4 @@
 
 `$ spyc test/01.spy`
 
-`$ python3 01.py`
+`$ python3 test/01.py`
