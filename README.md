@@ -25,3 +25,9 @@
 -lex: showing tokens of the input file (debugging mode)
 
 -show: showing the input spy code
+
+# Example
+
+`$ spyc test/01.spy`
+
+`$ python3 01.py`
