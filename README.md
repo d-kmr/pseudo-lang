@@ -17,8 +17,11 @@
 # Usage and options
 
 `$ spyc [-lex|-show] <inputfile>.spy` (this produces <inputfile>.py)
+
 `$ python3 <inputfile>.py`
 
-Options
+**Options**
+
 -lex: showing tokens of the input file (debugging mode)
+
 -show: showing the input spy code
