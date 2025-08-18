@@ -22,9 +22,9 @@
 
 **Options**
 
--lex: showing tokens of the input file (debugging mode)
+`-lex`: showing tokens of the input file (debugging mode)
 
--show: showing the input spy code
+`-show`: showing the input spy code
 
 # Example
 
