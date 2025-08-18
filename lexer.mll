@@ -85,10 +85,10 @@ indent record は各ブロックのインデントレベルの列 ([5;2;0] は 0
     pos := 0;
     inIndent := nextCharIs [' ';'\t'] lexbuf;
     let nextIsCommentLine = nextCharIs ['/'] lexbuf in
-    match nextIsCommentLine, List.hd !record <> 0 && not !inIndent with
+    match nextIsCommentLine, List.hd !record <> 0 && !inIndent with
     | true,_ -> raise Exit
-    | _,false -> addMemo "NEWLINE"; raise (Issue [NEWLINE])
-    | _,true ->
+    | _,true -> addMemo "NEWLINE"; raise (Issue [NEWLINE])
+    | _,false ->
        let (dedents,_) = popRecord [] 0 !record in
        record := [0];
        addMemo "NEWLINE";
@@ -145,11 +145,15 @@ rule tokens = parse
   | "true"    { addMemo "TRUE"; [TRUE] }
   | "false"   { addMemo "FALSE"; [FALSE] }
   | "while"   { addMemo "WHILE"; [WHILE] }
+  | "do"      { addMemo "DO"; [DO] }  
   | "for"     { addMemo "FOR"; [FOR] }
   | "each"    { addMemo "EACH"; [EACH] }
+  | "from"    { addMemo "FROM"; [FROM] }
+  | "to"      { addMemo "TO"; [TO] }  
   | "if"      { addMemo "IF"; [IF]  }
   | "then"    { addMemo "THEN"; [THEN] }  
   | "else"    { addMemo "ELSE"; [ELSE] }
+  | "else if" { addMemo "ELSEIF"; [ELSEIF] }  
   | "end"     { addMemo "END"; [END] }  
   | "return"  { addMemo "RETURN"; [RETURN] }
   | "function"{ addMemo "FUNCTION"; [FUNCTION] }
@@ -188,7 +192,7 @@ rule tokens = parse
   | '\n'      { try doNewLine lexbuf with Issue toks -> toks | Exit -> tokens lexbuf }
   | ' '       { try doSpaceTab lexbuf ' ' with Issue toks -> toks | Exit -> tokens lexbuf }
   | '\t'      { try doSpaceTab lexbuf '\t' with Issue toks -> toks | Exit -> tokens lexbuf }
-  | comment [^ '\n']* '\n' { try doNewLine lexbuf with Issue toks -> toks | Exit -> tokens lexbuf }
+  | comment [^ '\n']* { addMemo "(COMMENT)"; [] }
   | "/*"      { comment lexbuf }
   | _
     {
