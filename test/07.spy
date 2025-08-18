@@ -1,14 +1,11 @@
 
+// hoge
 
-
-
-
-function main() // hoge
-  x <- [10,20]
-  y <- 20
-  node <- { value=3, left=null , right=null }
-  z[0] <- x[0]
-  findNode(node,20)
-  return(x)
+function main() // fuga
+// aaaa
+  // aaa
+  x <- [10,20] // bbb
+  y <- 20 // ccc
   print(x)
+  // ddd
 end function

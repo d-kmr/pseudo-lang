@@ -24,7 +24,10 @@ function main()
   node1 <- { value=51, left=node10 , right=node11 }
   node <- { value=99, left=node0 , right=node1 }
   
-  if findNode(node,20) then
+  a <- [1,2,3].length
+  print(a)
+  
+  if findNode(node,3) then
 	print(true)
   else
     print(false)

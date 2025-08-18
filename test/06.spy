@@ -1,4 +1,4 @@
-function sort(data)
+function sort_error(data)
 	for i from 0 to data.length - 1
 		min <- data[i]
 		for j from i + 1 to data.length - 1
@@ -6,7 +6,24 @@ function sort(data)
 				min <- data[j]
 			end if
 		end for
+		
+		data[i] <- min
+	end for
 	
+	return data
+end function
+
+function sort_correct(data)
+	for i from 0 to data.length - 1
+		min <- data[i]
+		j1 <- i
+		for j from i + 1 to data.length - 1
+			if data[j] < min then
+				min <- data[j]
+				j1 <- j
+			end if
+		end for
+		data[j1] <- data[i]
 		data[i] <- min
 	end for
 	
@@ -14,11 +31,10 @@ function sort(data)
 end function
 
 function main()
-  x <- [1,2,3,4]
-  y <- 20
-  node <- { value=3, left=null , right=null }
-  z <- node.value
-  findNode(node,20)
-  return(x)
-  print(x)
+  x <- [3,4,2,1]
+  z <- sort_error(x)
+  print(z)
+  y <- [3,4,2,1]
+  w <- sort_correct(y)
+  print(w)
 end function

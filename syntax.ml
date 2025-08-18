@@ -139,7 +139,7 @@ module Stmt = struct
        Fmt.fprintf fmt "%s@[<h>foreach %s in %a:\n" (indent d) v Exp.pp e;
        Fmt.fprintf fmt "%a@]" (pp_suite (d+1)) stmtL
     | For(v,eStart,eEnd,stmtL) ->
-       Fmt.fprintf fmt "%s@[<h>for %s from %a to %a:\n" (indent d) v Exp.pp eStart Exp.pp eEnd;
+       Fmt.fprintf fmt "%s@[<h>for %s in range(%a,%a+1):\n" (indent d) v Exp.pp eStart Exp.pp eEnd;
        Fmt.fprintf fmt "%a@]" (pp_suite (d+1)) stmtL
     | While(c,stmtL) ->
        Fmt.fprintf fmt "%s@[<h>while %a:\n" (indent d) Exp.pp c;

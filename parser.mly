@@ -48,6 +48,7 @@
 %token COMMA    // ","
 %token LEFTARROW// "<-"
 %token DOT      // '.'
+%token DOTLENGTH// ".length"
 %token NULL     // "null"
 
 %token NEWLINE  // '\n'
@@ -66,7 +67,7 @@
 %%
 // 
 main:  
-  | dd=nonempty_list(d=fundef; list(NEWLINE) {d}); eof { dd }
+  | bof; dd=nonempty_list(d=fundef; list(NEWLINE) {d}); eof { dd }
 ;
 fundef:  
   | FUNCTION; fname=IDENT;
@@ -77,6 +78,9 @@ fundef:
 close:
   | NEWLINE { () }
   | INDENT NEWLINE DEDENT { () }
+;
+bof:
+  | list(NEWLINE) { () }
 ;
 eof:
   | list(close); EOF { () }
@@ -93,6 +97,7 @@ exp:
   | e1=exp; MOD;   e2=exp { Exp.Mod(e1,e2) } // e1 mod e2
   | MINUS; e=exp; %prec UNARY { Exp.Minus e } // -e
   | e=exp; DOT; fld=IDENT { Exp.Mem(e,fld) } // e.fld
+  | e=exp; DOTLENGTH { Exp.Fun("len",[e]) } // e.length
   | e1=exp; LBRACKET; e2=exp; RBRACKET { Exp.Idx(e1,e2) } // e1[e2]
   | fname=IDENT; LPAREN; ee=separated_list(COMMA,e=exp {e}); RPAREN { Exp.Fun(fname,ee) } // f(e1,..,en)
   | LCBRACKET; feL=separated_list(COMMA,f=IDENT;EQ;e=exp {(f,e)}); RCBRACKET { Exp.Str feL } // {fld1=e1,..,fldn=en}

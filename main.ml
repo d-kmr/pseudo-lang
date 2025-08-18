@@ -64,11 +64,10 @@ let readfile input_filename =
   filename := input_filename;
   prog := parse (inputstr_file input_filename)
 ;;         
-let msgUsage = "USAGE: spyc <file>.spy"
+let msgUsage = "USAGE: spyc [-lex|-show] <file>.spy"
 
 let speclist = [
     ("-lex", Arg.Unit (fun _ -> addDebugOpt "LEXING"), "Set lexing debug mode");
-    ("-parse", Arg.Unit (fun _ -> addDebugOpt "PARSING"), "Set parsing debug mode");
     ("-show", Arg.Unit (fun _ -> addDebugOpt "SHOW"), "Show the translated pyhon code");
 ]
 

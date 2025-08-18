@@ -138,7 +138,6 @@ let alpha0 = ['a'-'z']
 let alpha1 = ['A'-'Z']
 let alnum = digit | alpha | ['_' '-']
 let ident = alpha alnum*
-let comment = "//"
 let natnum = '0' | posdigit digit*
                      
 rule tokens = parse
@@ -182,6 +181,7 @@ rule tokens = parse
   | ">="      { addMemo "GE"; [GE] }  
   | "<-"      { addMemo "LEFTARROW"; [LEFTARROW] }
   | '.'       { addMemo "DOT"; [DOT] }
+  | ".length" { addMemo "DOTLENGTH"; [DOTLENGTH] }  
   | ','       { addMemo "COMMA"; [COMMA] }  
   | ident    { let id = Lexing.lexeme lexbuf in
                 addMemo (F.sprintf "Id(%s)" id);
@@ -193,7 +193,7 @@ rule tokens = parse
   | '\n'      { try doNewLine lexbuf with Issue toks -> toks | Exit -> tokens lexbuf }
   | ' '       { try doSpaceTab lexbuf ' ' with Issue toks -> toks | Exit -> tokens lexbuf }
   | '\t'      { try doSpaceTab lexbuf '\t' with Issue toks -> toks | Exit -> tokens lexbuf }
-  | comment [^ '\n']* { addMemo "(COMMENT)"; [] }
+  | "//" [^ '\n']* { addMemo "COMMENT"; tokens lexbuf }
   | "/*"      { comment lexbuf }
   | _
     {
