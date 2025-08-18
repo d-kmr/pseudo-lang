@@ -16,7 +16,7 @@
 
 # Usage and options
 
-`$ spyc [-lex|-show] <inputfile>.spy` (this produces <inputfile>.py)
+`$ spyc [-lex|-show] <inputfile>.spy` (this produces "<inputfile>.py")
 
 `$ python3 <inputfile>.py`
 
