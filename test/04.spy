@@ -1,15 +1,22 @@
-function findNode(node,value)
- while node != null do
-	x<-10
+function sum(z)
+ s <- 0
+ i <- 0
+ while i<=z do
+	s <- s+i
+	i <- i+1
  end while
+ return s
 end function
 
-function main(x,y,z)
+function main()
+  x <- 3
+  z <- 1
   x <- 10+x*z
-  y <- 20
+  y <- 10
   node <- { value=3, left=null , right=null }
-  z <- node.value
-  findNode(node,20)
-  return(x)
+  z <- sum(y)
   print(x)
+  print(y)
+  print(z)
+  return
 end function
