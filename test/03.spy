@@ -1,0 +1,8 @@
+function main(x,y,z)
+  x <- 10+x*z
+  y <- 20
+  node <- { value=3, left=null , right=null }
+  z <- node.value
+  return(x)
+  print(x)
+end function

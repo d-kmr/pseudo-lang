@@ -1,0 +1,6 @@
+function main(x,y,z)
+  x <- 10+x*z
+  y <- 20
+  return(x)
+  print(x)
+end function

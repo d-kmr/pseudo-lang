@@ -1,0 +1,14 @@
+
+
+
+
+
+function main() // hoge
+  x <- [10,20]
+  y <- 20
+  node <- { value=3, left=null , right=null }
+  z[0] <- x[0]
+  findNode(node,20)
+  return(x)
+  print(x)
+end function

@@ -1,0 +1,22 @@
+function findNode(node, value)
+	while node != null do
+		if node.value = value then
+			return true
+		else if node.value != value then
+			node <- node.left
+		else
+			node <- node.right
+		end if
+	end while
+	return false
+end function
+
+function main(x,y,z)
+  x <- 10+x*z
+  y <- 20
+  node <- { value=3, left=null , right=null }
+  z <- node.value
+  findNode(node,20)
+  return(x)
+  print(x)
+end function
