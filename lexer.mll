@@ -156,6 +156,7 @@ rule tokens = parse
   | "else if" { addMemo "ELSEIF"; [ELSEIF] }  
   | "end"     { addMemo "END"; [END] }  
   | "return"  { addMemo "RETURN"; [RETURN] }
+  | "print"   { addMemo "PRINT"; [PRINT] }  
   | "function"{ addMemo "FUNCTION"; [FUNCTION] }
   | "in"      { addMemo "IN"; [IN] }  
   | "null"    { addMemo "NULL"; [NULL] }
